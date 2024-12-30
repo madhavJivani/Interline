@@ -29,4 +29,6 @@ tailwind.config.js
 vite.config.js
 postcss.config.js
 components.json
-
+.env
+ui
+hooks
