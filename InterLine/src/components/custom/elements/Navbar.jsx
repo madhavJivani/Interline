@@ -16,8 +16,8 @@ const Navbar = () => {
 
 
     return (
-        <nav className="flex justify-between items-center p-4 shadow-sm mb-10 dark:shadow-primary shadow-muted-foreground"> {/* Added margin-bottom and shadow */}
-            <div className="flex items-center"> {/* Main container for logo and links */}
+        <nav className="flex justify-between items-center p-4 shadow-sm mb-10 dark:shadow-primary shadow-muted-foreground min-w-[620px]"> {/* Added margin-bottom and shadow */}
+            <div className="flex items-center mr-5"> {/* Main container for logo and links */}
                 <div className="flex items-center space-x-4 mr-8"> {/* Added margin-right */}
                     <img
                         src={theme === "dark" ? logo_light : logo_dark}

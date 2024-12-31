@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     theme: "dark",
+    editorTheme: "vs-dark",
 };
 
 const themeSlice = createSlice({
@@ -16,9 +17,13 @@ const themeSlice = createSlice({
                 document.documentElement.classList.remove("dark");
             }
         },
+        toggleEditorTheme(state, action) {
+            state.editorTheme = action.payload;
+        },
+
     },
 });
 
-export const { toggleTheme } = themeSlice.actions;
+export const { toggleTheme, toggleEditorTheme } = themeSlice.actions;
 
 export default themeSlice.reducer;

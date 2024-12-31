@@ -1,12 +1,5 @@
 import React from "react";
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-} from "@/components/ui/select";
+import {Select,SelectContent,SelectGroup,SelectItem,SelectLabel,SelectTrigger,} from "@/components/ui/select";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleLanguage } from "@/store/languageSlice";
 
@@ -15,17 +8,17 @@ const LanguageSelect = () => {
     const { language, version } = useSelector((state) => state.language);
 
     return (
-        <div className="w-full flex justify-start mb-1 px-5">
+        <div className="w-full flex justify-start">
             <Select
                 defaultValue="javascript"
                 onValueChange={(value) => {
                     dispatch(toggleLanguage({ language: value }));
                 }}
             >
-                <SelectTrigger className="w-[12vw]"> {/* Increased width for better display */}
+                <SelectTrigger className="w-[12vw] min-w-40"> {/* Increased width for better display */}
                     <div className="flex justify-between items-center w-full"> {/* Added flex container */}
                         <span>{language.charAt(0).toUpperCase() + language.slice(1)}</span>
-                        {<span className="text-primary" >v{version}</span>}
+                        {<span className="text-primary mr-1" >v{version}</span>}
                     </div>
                 </SelectTrigger>
                 <SelectContent>
