@@ -11,18 +11,18 @@ const initialState = {
     lineNumbers: "on",
     minimap: {
         enabled: true,
-        size: "fill",
+        size: "fit",
     },
     wordWrap: "on",
     tabSize: 4,
     fontFamily: "Fira Code",
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "500",
     hover: {
         enabled: true
     },
     cursorStyle: "line",
-    renderWhitespace: "boundary",
+    renderWhitespace: "trailing",
     smoothScrolling: true,
     inlineSuggest: false,
     mouseWheelZoom: false,
