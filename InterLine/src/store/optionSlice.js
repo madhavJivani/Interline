@@ -24,7 +24,7 @@ const initialState = {
     cursorStyle: "line",
     renderWhitespace: "trailing",
     smoothScrolling: true,
-    inlineSuggest: false,
+    inlineSuggest: true,
     mouseWheelZoom: false,
 };
 
@@ -58,6 +58,11 @@ const optionSlice = createSlice({
         toggleFontWeight(state,action) {
             state.fontWeight = action.payload
         },
+        toggleSmoothScrolling(state) {
+            state.smoothScrolling = !state.smoothScrolling
+        },
+
+        // yet to see 
         toggleHover(state) {
             state.hover.enabled = !state.hover.enabled
         },
@@ -68,9 +73,6 @@ const optionSlice = createSlice({
         toggleRenderWhitespace(state,action) {
             state.renderWhitespace = action.payload
             // none, boundary, trailing, all
-        },
-        toggleSmoothScrolling(state) {
-            state.smoothScrolling = !state.smoothScrolling
         },
         toggleInlineSuggest(state) {
             state.inlineSuggest = !state.inlineSuggest

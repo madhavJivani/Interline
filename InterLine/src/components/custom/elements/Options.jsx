@@ -9,8 +9,11 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Settings } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { toggleLine, toggleTabs, toggleMinimapVisiblity, toggleMinimapSize, toggleWordWrap, toggleFontFamily, toggleFontSize, toggleFontWeight, toggleHover, toggleCursorStyle, toggleRenderWhitespace, toggleSmoothScrolling, toggleInlineSuggest, toggleMouseWheelZoom } from '@/store/optionSlice';
 
 const Options = () => {
+    const dispatch = useDispatch();
     const [isOpen, setIsOpen] = useState(false);
     const [showLineNumbers, setShowLineNumbers] = useState(true);
     const [tabSize, setTabSize] = useState("4");
@@ -21,18 +24,18 @@ const Options = () => {
     const [fontSize, setFontSize] = useState([20]);
     const [fontWeight, setFontWeight] = useState([500]);
     const [smoothScrolling, setSmoothScrolling] = useState(true);
-
-    const handleChange = (type, value) => {
-        console.log(`${type} updated to:`, value);
-    };
-
+    const [hover, setHover] = useState({ enabled: true });
+    const [cursorStyle, setCursorStyle] = useState("line");
+    const [renderWhitespace, setRenderWhitespace] = useState("trailing");
+    const [inlineSuggest, setInlineSuggest] = useState(true);
+    const [mouseWheelZoom, setMouseWheelZoom] = useState(false);
     return (
         <>
             {/* Dialog */}
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
                 <DialogTrigger asChild>
                     <Button
-                        className="fixed top-16 mt-6 right-2"
+                        className="absolute right-2 mt-2"
                         onClick={() => setIsOpen(true)}
                         variant="ghost"
                         size="circleIcon"
@@ -52,7 +55,7 @@ const Options = () => {
                                     checked={showLineNumbers}
                                     onCheckedChange={(value) => {
                                         setShowLineNumbers(value);
-                                        handleChange("Line Numbers", value);
+                                        dispatch(toggleLine());
                                     }}
                                 />
                             </div>
@@ -66,7 +69,7 @@ const Options = () => {
                                     value={tabSize}
                                     onValueChange={(value) => {
                                         setTabSize(value);
-                                        handleChange("Tab Size", value);
+                                        dispatch(toggleTabs());
                                     }}
                                 >
                                     <SelectTrigger>{tabSize} Spaces</SelectTrigger> {/* Show current selection */}
@@ -78,7 +81,6 @@ const Options = () => {
                             </div>
                             <Separator />
 
-                            {/* ... (Other options - similar structure as above) */}
                             {/* Minimap Visibility */}
                             <div className="space-y-2">
                                 <Label>Minimap Visibility</Label>
@@ -87,7 +89,7 @@ const Options = () => {
                                     checked={minimapVisibility}
                                     onCheckedChange={(value) => {
                                         setMinimapVisibility(value);
-                                        handleChange("Minimap Visibility", value);
+                                        dispatch(toggleMinimapVisiblity());
                                     }}
                                 />
                             </div>
@@ -101,10 +103,10 @@ const Options = () => {
                                     value={minimapSize}
                                     onValueChange={(value) => {
                                         setMinimapSize(value);
-                                        handleChange("Minimap Size", value);
+                                        dispatch(toggleMinimapSize());
                                     }}
                                 >
-                                    <SelectTrigger>{minimapSize}</SelectTrigger>
+                                    <SelectTrigger>{minimapSize.charAt(0).toUpperCase()+minimapSize.slice(1)}</SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="fit">Fit</SelectItem>
                                         <SelectItem value="fill">Fill</SelectItem>
@@ -121,7 +123,7 @@ const Options = () => {
                                     checked={wordWrap}
                                     onCheckedChange={(checked) => {
                                         setWordWrap(checked);
-                                        handleChange("Word Wrap", checked);
+                                        dispatch(toggleWordWrap());
                                     }}
                                 />
                             </div>
@@ -135,7 +137,7 @@ const Options = () => {
                                     value={fontFamily}
                                     onValueChange={(value) => {
                                         setFontFamily(value);
-                                        handleChange("Font Family", value);
+                                        dispatch(toggleFontFamily(value));
                                     }}
                                 >
                                     <SelectTrigger>{fontFamily}</SelectTrigger>
@@ -160,7 +162,7 @@ const Options = () => {
                                     step={1}
                                     onValueChange={(value) => {
                                         setFontSize(value);
-                                        handleChange("Font Size", value);
+                                        dispatch(toggleFontSize(value));
                                     }}
                                 />
                                 
@@ -178,7 +180,7 @@ const Options = () => {
                                     step={50}
                                     onValueChange={(value) => {
                                         setFontWeight(value);
-                                        handleChange("Font Weight", value);
+                                        dispatch(toggleFontWeight(value));
                                     }}
                                 />
                             </div>
@@ -192,7 +194,92 @@ const Options = () => {
                                     checked={smoothScrolling}
                                     onCheckedChange={(value) => {
                                         setSmoothScrolling(value);
-                                        handleChange("Smooth Scrolling", value);
+                                        dispatch(toggleSmoothScrolling());
+                                    }}
+                                />
+                            </div>
+                            <Separator />
+
+                            {/* Hover */}
+                            <div className="space-y-2">
+                                <Label>Hover</Label>
+                                <p className="text-sm text-gray-500">Enable or disable hover tooltips in the editor.</p>
+                                <Switch
+                                    checked={hover.enabled}
+                                    onCheckedChange={(value) => {
+                                        setHover({ enabled: value });
+                                        dispatch(toggleHover());
+                                    }}
+                                />
+                            </div>
+                            <Separator />
+
+                            {/* Cursor Style */}
+                            <div className="space-y-2">
+                                <Label>Cursor Style</Label>
+                                <p className="text-sm text-gray-500">Change the cursor style in the editor.</p>
+                                <Select
+                                    value={cursorStyle}
+                                    onValueChange={(value) => {
+                                        setCursorStyle(value);
+                                        dispatch(toggleCursorStyle(value));
+                                    }}
+                                >
+                                    <SelectTrigger>{cursorStyle}</SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="line">Line</SelectItem>
+                                        <SelectItem value="block">Block</SelectItem>
+                                        <SelectItem value="underline">Underline</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                            <Separator />
+
+                            {/* Render Whitespace */}
+                            <div className="space-y-2">
+                                <Label>Render Whitespace</Label>
+                                <p className="text-sm text-gray-500">Choose how whitespace is rendered in the editor.</p>
+                                <Select
+                                    value={renderWhitespace}
+                                    onValueChange={(value) => {
+                                        setRenderWhitespace(value);
+                                        dispatch(toggleRenderWhitespace(value));
+                                    }}
+                                >
+                                    <SelectTrigger>{renderWhitespace}</SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="none">None</SelectItem>
+                                        <SelectItem value="boundary">Boundary</SelectItem>
+                                        <SelectItem value="trailing">Trailing</SelectItem>
+                                        <SelectItem value="all">All</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                            <Separator />
+
+                            {/* Inline Suggest */}
+                            <div className="space-y-2">
+                                <Label>Inline Suggest</Label>
+                                <p className="text-sm text-gray-500">Enable or disable inline suggestions in the editor.</p>
+                                <Switch
+                                    checked={inlineSuggest}
+                                    onCheckedChange={(value) => {
+                                        setInlineSuggest(value);
+                                        dispatch(toggleInlineSuggest());
+                                    }}
+                                />
+                            </div>
+                            <Separator />
+
+                            {/* Mouse Wheel Zoom */}
+                            <div className="space-y-2">
+                                <Label>Mouse Wheel Zoom</Label>
+                                <p className="text-sm text-gray-500">Enable or disable zooming with the mouse wheel.</p>
+                                <Switch
+                                    checked={mouseWheelZoom}
+                                    onCheckedChange={(value) => {
+                                        setMouseWheelZoom(value);
+                                        dispatch(toggleMouseWheelZoom());
                                     }}
                                 />
                             </div>
