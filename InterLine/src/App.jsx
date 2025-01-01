@@ -5,6 +5,7 @@ import Navbar from './components/custom/elements/Navbar'
 import Home from '@/components/custom/Home'
 import Signup from '@/components/custom/Signup'
 import Login from '@/components/custom/Login'
+import { Toaster } from "@/components/ui/toaster"
 // import IDE from '@/components/custom/elements/themes/Editor.jsx'
 const App = () => {
   // console.log(import.meta.env.VITE_NAME);
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           {/* <Route path="/test" element={<IDE />} /> */}
         </Routes>
+        <Toaster />
       </Router>
     </div>
   )

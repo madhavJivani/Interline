@@ -5,23 +5,55 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Mail, User, Eye, EyeOff } from "lucide-react";
 import { Link } from "react-router-dom";
+import { ID } from "appwrite";
+import { account } from "@/appwrite/configuration";
+import { useToast } from "@/hooks/use-toast"
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
+    const { toast } = useToast();
+    const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const signupHandler = () => { 
+    const signupHandler = async () => { 
         console.table({ firstName, lastName, email, password });
+        setPassword("");
+
+        try {
+            const res = await account.create(ID.unique(), email, password, `${firstName.trim()} ${lastName.trim()}`);
+            console.log(res);
+            if (res.status) {
+                toast({
+                    description: "Account created successfully",
+                    status: "success"
+                });
+                navigate("/login");
+            }
+            else { 
+                toast({
+                    description: "Account creation failed",
+                    status: "error"
+                });
+            }
+
+        } catch (error) {
+            console.error("Signup failed", error.message || error);
+            toast({
+                description: `Some error occured , please try again later`,
+                status: "error"
+            });
+        }
     };
 
     return (
         <div className="flex items-center justify-center min-h-screen">
             <Card className="w-full max-w-md p-6">
                 <CardHeader className="text-center">
-                    <CardTitle className="text-2xl font-bold">Welcome to Interline!</CardTitle>
+                    <CardTitle className="text-2xl font-bold border-b-2 pb-1">Welcome to Interline!</CardTitle>
                     <p className="text-sm text-muted-foreground mt-1">
                         Create an account to start coding effortlessly.
                         <br />

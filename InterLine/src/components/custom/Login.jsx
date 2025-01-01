@@ -5,21 +5,65 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Mail, Eye, EyeOff } from "lucide-react";
 import { Link } from "react-router-dom";
+import { account } from "@/appwrite/configuration";
+import { useToast } from "@/hooks/use-toast"
+import { useNavigate } from "react-router-dom";
+import { loginUser } from '@/store/userSlice.js'
+import { useDispatch } from "react-redux";
 
 const Login = () => {
+    const { toast } = useToast();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const loginHandler = () => { 
-        console.table({ email, password });
-    }
+    
+    
+    const loginHandler = async () => {
+        try {
+            if (!email || !password) {
+                toast({
+                    desciption: "Email and Password are required!",
+                    status: "error"
+                })
+                // console.error("Email and Password are required!");
+                return;
+            }
+            console.table({ email, password });
+            const res = await account.createEmailPasswordSession(email, password);
+
+            if (res) {
+                // console.log("Login Successful:", res);
+                toast({
+                    description: "Login Successful",
+                    status: "success"
+                })
+                const user = await account.get();
+                toast({
+                    description: `Welcome ${user.name}`,
+                    status: "success"
+                })
+                dispatch(loginUser(user));
+                // console.log("User Details:", user);
+                navigate("/");
+            }
+        } catch (error) {
+            console.error("Login failed:", error.message || error);
+            toast({
+                description: `Login failed: ${error.message || error}`,
+                status: "error"
+            })
+        }
+    };
+
 
     return (
         <div className="flex items-center justify-center min-h-screen">
             <Card className="w-full max-w-md p-6">
                 <CardHeader className="text-center">
-                    <CardTitle className="text-2xl font-bold">Welcome Back!</CardTitle>
+                    <CardTitle className="text-2xl font-bold  border-b-2 pb-1">Welcome Back!</CardTitle>
                     <p className="text-sm text-muted-foreground mt-1">
                         Log in to your account to continue exploring Interline.
                     </p>

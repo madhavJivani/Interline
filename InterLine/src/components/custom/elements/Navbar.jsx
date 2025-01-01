@@ -7,8 +7,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toggleTheme } from '@/store/themeSlice.js';
 import { useNavigate } from 'react-router-dom';
 import { logoutUser } from '@/store/userSlice.js';
+import { useToast } from "@/hooks/use-toast"
 
 const Navbar = () => {
+    const { toast } = useToast();
     const { theme } = useSelector((state) => state.theme);
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
@@ -63,6 +65,10 @@ const Navbar = () => {
                         onClick={() => { 
                             dispatch(logoutUser());
                             navigate("/");
+                            toast({
+                                description: "Logged out successfully",
+                                status: "success"
+                            });
                         }}
                     >
                         {<LogOut size={16} />}Logout
