@@ -8,6 +8,7 @@ import { toggleTheme } from '@/store/themeSlice.js';
 import { useNavigate } from 'react-router-dom';
 import { logoutUser } from '@/store/userSlice.js';
 import { useToast } from "@/hooks/use-toast"
+import { account } from '@/appwrite/configuration.js'
 
 const Navbar = () => {
     const { toast } = useToast();
@@ -16,6 +17,17 @@ const Navbar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const logoutHandler = async () => {
+        await account.deleteSession("current");
+        console.log("User logged out");
+
+        dispatch(logoutUser());
+        navigate("/");
+        toast({
+            description: "Logged out successfully",
+            status: "success"
+        });
+    }
 
     return (
         <nav className="flex justify-between items-center p-4 shadow-sm dark:shadow-primary shadow-muted-foreground min-w-[620px]"> 
@@ -62,14 +74,7 @@ const Navbar = () => {
                 {user.status === "loggedIn" &&
                     (<>
                     <Button variant="link" size="md" className="text-sm font-medium"
-                        onClick={() => { 
-                            dispatch(logoutUser());
-                            navigate("/");
-                            toast({
-                                description: "Logged out successfully",
-                                status: "success"
-                            });
-                        }}
+                        onClick={logoutHandler}
                     >
                         {<LogOut size={16} />}Logout
                     </Button>

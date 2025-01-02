@@ -1,14 +1,30 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { Toaster } from "@/components/ui/toaster"
+import { account } from '@/appwrite/configuration.js'
+import { loginUser } from '@/store/userSlice.js'
+import { useDispatch } from 'react-redux'
 import CodeEditor from '@/components/custom/CodeEditor'
 import Navbar from './components/custom/elements/Navbar'
 import Home from '@/components/custom/Home'
 import Signup from '@/components/custom/Signup'
 import Login from '@/components/custom/Login'
-import { Toaster } from "@/components/ui/toaster"
 // import IDE from '@/components/custom/elements/themes/Editor.jsx'
 const App = () => {
   // console.log(import.meta.env.VITE_NAME);
+  const dispatch = useDispatch();
+      useEffect(() => { 
+          const fetchProfile = async () => {
+              try {
+                  const user = await account.get();
+                  console.log("User Details:", user);
+                  dispatch(loginUser(user));
+              } catch (error) {
+                  console.error("Fetching Profile failed:", error.message || error);
+              }
+          }
+          fetchProfile();
+      }, [dispatch]);
   return (
     <div className='min-w-[620px]'>
       <Router>

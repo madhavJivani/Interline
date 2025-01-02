@@ -17,16 +17,11 @@ const userSlice = createSlice({
         logoutUser(state) {
             state.user = {};
             state.status = "loggedOut";
-            logoutHandler();
             
         },
     },
 });
 
-const logoutHandler = async () => {
-    await account.deleteSession("current");
-    console.log("User logged out");
-}
 export const { loginUser, logoutUser } = userSlice.actions;
 
 export default userSlice.reducer;

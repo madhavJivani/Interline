@@ -58,6 +58,22 @@ const Login = () => {
         }
     };
 
+    const googleLoginHandler = async () => { 
+        try {
+            const res = await account.createOAuth2Session(
+                "google",
+                "http://localhost:5173/code-editor/",
+                "http://localhost:5173/fail"
+            );
+            console.log("res",res);
+            const user = await account.get();
+            console.log("Google user => ", user);
+            dispatch(loginUser(user));
+        } catch (error) {
+            console.error("OAuth Session creation failed:", error.message || error);
+        }        
+    }
+
 
     return (
         <div className="flex items-center justify-center min-h-screen">
@@ -109,6 +125,14 @@ const Login = () => {
                 </CardContent>
                 <CardFooter className="flex flex-col items-center space-y-4">
                     <Button className="w-full" onClick={loginHandler} >Log In</Button>
+                    <Button className="w-full" onClick={googleLoginHandler} >Log In - Auth </Button>
+                    <Button className="w-full" onClick={
+                        async () => { 
+                            const user = await account.get();
+                            console.log("Google user => ", user);
+                        await account.deleteSession("current");
+                        console.log("User logged out");
+                    }} >Logout </Button>
                     <p className="text-sm text-muted-foreground">
                         Don't have an account? <Link to="/signup" className="text-primary">Sign Up</Link>
                     </p>
