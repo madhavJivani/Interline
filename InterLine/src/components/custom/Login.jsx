@@ -10,18 +10,20 @@ import { useToast } from "@/hooks/use-toast"
 import { useNavigate } from "react-router-dom";
 import { loginUser } from '@/store/userSlice.js'
 import { useDispatch } from "react-redux";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { SpinWheelLoader } from '@/components/custom/elements/Loader'
 
 const Login = () => {
+    const [loading, setLoading] = useState(false);
     const { toast } = useToast();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
-    
     
     const loginHandler = async () => {
+        setLoading(true);
         try {
             if (!email || !password) {
                 toast({
@@ -56,9 +58,13 @@ const Login = () => {
                 status: "error"
             })
         }
+        finally {
+            setLoading(false);
+        }
     };
 
     const googleLoginHandler = async () => { 
+        setLoading(true);
         try {
             const res = await account.createOAuth2Session(
                 "google",
@@ -71,7 +77,10 @@ const Login = () => {
             dispatch(loginUser(user));
         } catch (error) {
             console.error("OAuth Session creation failed:", error.message || error);
-        }        
+        }      
+        finally {
+            setLoading(false);
+        }
     }
 
 
@@ -124,15 +133,31 @@ const Login = () => {
                     </div>
                 </CardContent>
                 <CardFooter className="flex flex-col items-center space-y-4">
-                    <Button className="w-full" onClick={loginHandler} >Log In</Button>
-                    <Button className="w-full" onClick={googleLoginHandler} >Log In - Auth </Button>
-                    <Button className="w-full" onClick={
-                        async () => { 
-                            const user = await account.get();
-                            console.log("Google user => ", user);
-                        await account.deleteSession("current");
-                        console.log("User logged out");
-                    }} >Logout </Button>
+                        <Button className="w-full"
+                            onClick={loginHandler}
+                            disabled={loading}
+                    >
+                        { 
+                            loading ? (<div className="flex items-center justify-center mx-auto">
+                                <SpinWheelLoader />
+                            </div>) : "Log In"
+                        }
+                        </Button>
+                    <Button
+                            onClick={googleLoginHandler}
+                            disabled={loading}
+                        className="w-full relative justify-start items-center" 
+                    >
+                        <Avatar className="absolute left-2 h-6 w-6">
+                            <AvatarImage src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWg7X0YYzUCU5m8BA_sH_ti92q4X0lCz5h_w&s"} alt="Google Logo" />
+                            <AvatarFallback>G</AvatarFallback>
+                        </Avatar>
+                        {
+                            loading ? (<div className="flex items-center justify-center mx-auto">
+                                <SpinWheelLoader />
+                            </div>) : (<span className="mx-auto">Sign in with Google</span>)
+                        }
+                    </Button>
                     <p className="text-sm text-muted-foreground">
                         Don't have an account? <Link to="/signup" className="text-primary">Sign Up</Link>
                     </p>

@@ -9,8 +9,10 @@ import { ID } from "appwrite";
 import { account } from "@/appwrite/configuration";
 import { useToast } from "@/hooks/use-toast"
 import { useNavigate } from "react-router-dom";
+import { SpinWheelLoader } from '@/components/custom/elements/Loader'
 
 const Signup = () => {
+    const [loading, setLoading] = useState(false);
     const { toast } = useToast();
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
@@ -19,7 +21,8 @@ const Signup = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const signupHandler = async () => { 
+    const signupHandler = async () => {
+        setLoading(true);
         console.table({ firstName, lastName, email, password });
         setPassword("");
 
@@ -33,7 +36,7 @@ const Signup = () => {
                 });
                 navigate("/login");
             }
-            else { 
+            else {
                 toast({
                     description: "Account creation failed",
                     status: "error"
@@ -46,6 +49,9 @@ const Signup = () => {
                 description: `Some error occured , please try again later`,
                 status: "error"
             });
+        }
+        finally {
+            setLoading(false);
         }
     };
 
@@ -126,7 +132,16 @@ const Signup = () => {
                     </div>
                 </CardContent>
                 <CardFooter className="flex flex-col items-center space-y-4">
-                    <Button className="w-full" onClick={signupHandler} >Submit</Button>
+                    <Button className="w-full"
+                        onClick={signupHandler}
+                        disabled={loading}
+                    >
+                        {
+                            loading ? (<div className="flex items-center justify-center mx-auto">
+                                <SpinWheelLoader />
+                            </div>) : "Submit"
+                        }
+                    </Button>
                     <p className="text-sm text-muted-foreground">
                         Already have an account? <Link to="/login" className="text-primary">Login</Link>
                     </p>

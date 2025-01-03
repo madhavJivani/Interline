@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react'
+import React,{useEffect,useState} from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Toaster } from "@/components/ui/toaster"
 import { account } from '@/appwrite/configuration.js'
@@ -9,9 +9,9 @@ import Navbar from './components/custom/elements/Navbar'
 import Home from '@/components/custom/Home'
 import Signup from '@/components/custom/Signup'
 import Login from '@/components/custom/Login'
-// import IDE from '@/components/custom/elements/themes/Editor.jsx'
+import {DotPingLoader } from '@/components/custom/elements/Loader'
 const App = () => {
-  // console.log(import.meta.env.VITE_NAME);
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
       useEffect(() => { 
           const fetchProfile = async () => {
@@ -22,11 +22,17 @@ const App = () => {
               } catch (error) {
                   console.error("Fetching Profile failed:", error.message || error);
               }
+            finally {
+                setLoading(false);
+            }
           }
           fetchProfile();
       }, [dispatch]);
   return (
-    <div className='min-w-[620px]'>
+    loading ? (<div className="flex items-center justify-center h-screen">
+      <DotPingLoader />
+    </div>):
+    (<div className='min-w-[620px]'>
       <Router>
         <Navbar />
         <Routes>
@@ -34,11 +40,15 @@ const App = () => {
           <Route path="/code-editor" element={<CodeEditor />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          {/* <Route path="/test" element={<IDE />} /> */}
+          <Route path="/test" element={
+            <div className="flex items-center justify-center h-screen">
+              <DotPingLoader />
+            </div>
+          } />
         </Routes>
         <Toaster />
       </Router>
-    </div>
+    </div>)
   )
 }
 

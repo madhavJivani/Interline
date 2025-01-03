@@ -31,7 +31,7 @@ const Navbar = () => {
 
     return (
         <nav className="flex justify-between items-center p-4 shadow-sm dark:shadow-primary shadow-muted-foreground min-w-[620px]"> 
-            <div className="flex items-center mr-5"> {/* Main container for logo and links */}
+            <div className="flex items-center mr-5 hover:cursor-context-menu"> {/* Main container for logo and links */}
                 <div className="flex items-center space-x-4 mr-8"> {/* Added margin-right */}
                     <img
                         src={theme === "dark" ? logo_light : logo_dark}
