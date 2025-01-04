@@ -12,7 +12,7 @@ const getRuntimes = async () => {
     }
 }
 
-const runCode = async (language, version, code) => { 
+const runCode = async (language, version, code, input) => { 
     const url = 'https://emkc.org/api/v2/piston/execute'
     try {
         const response = await axios.post(url, {
@@ -23,6 +23,7 @@ const runCode = async (language, version, code) => {
                     content: code
                 }
             ],
+            stdin: input
         });
         console.log(response.data)
         return response.data

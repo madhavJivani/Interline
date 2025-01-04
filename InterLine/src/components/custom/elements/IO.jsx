@@ -11,9 +11,10 @@ import { docco, atomOneDark, atomOneLight } from 'react-syntax-highlighter/dist/
 import { Copy, Check } from "lucide-react"; // Import copy and check icons
 import { useSelector } from "react-redux";
 
-const IO = ({ output }) => {
+const IO = ({ output ,input , setInput}) => {
     const { theme } = useSelector((state) => state.theme);
     const [isCopied, setIsCopied] = useState(false);
+    // console.log(input);
 
     const highlighterStyles = {
         light: atomOneLight,
@@ -32,9 +33,10 @@ const IO = ({ output }) => {
 
     // Check for SIGKILL signal and display appropriate message
     const outputText = output?.run?.signal === "SIGKILL"
-        ? "Process terminated by SIGKILL signal.\n\nThis usually happens when the program takes too long to execute or uses too much memory."
+        ? "Process terminated by SIGKILL signal.\n\nThis usually happens when the program takes too long to execute or uses too much memory.\n\nOr maybe due to server load. Please try again  later ..."
         : (output?.run?.output || "Output");
 
+    
     return (
         <div className="w-full h-full border rounded-md bg-background max-h-[50vh] m-2 relative"> {/* Added relative positioning */}
             <ResizablePanelGroup direction="horizontal" className="h-full max-h-[50vh]">
@@ -43,7 +45,9 @@ const IO = ({ output }) => {
                     <ScrollArea className="h-full w-full p-4 border-r border-muted max-h-[50vh]">
                         <Textarea
                             className="w-full min-h-[15vh] max-h-[45vh] p-5"
-                            placeholder="Write your input here..."
+                            placeholder="Write your input here, give a 'nextline' after each input"
+                            value={input}   
+                            onChange={(e) => setInput(e.target.value)}
                         />
                     </ScrollArea>
                 </ResizablePanel>
