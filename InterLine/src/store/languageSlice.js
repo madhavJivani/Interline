@@ -3,7 +3,7 @@ import { LANGUAGES_DETAILS } from '@/constants.js'
 
 const initialState = {
     language: "javascript",
-    version: "18.15.0",
+    version: "1.32.3",
     snippet: `console.log("Welcome to Interleaf");`
 };
 
