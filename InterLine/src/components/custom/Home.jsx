@@ -1,8 +1,13 @@
 import React from 'react'
+import IO from './elements/IO'
 
 const Home = () => {
   return (
-    <div>Home</div>
+    <div>Home
+
+      IO section below ↓
+      <IO />
+    </div>
   )
 }
 
