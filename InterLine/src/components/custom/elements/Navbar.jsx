@@ -52,7 +52,7 @@ const Navbar = () => {
                 </div>
             </div>
 
-            <div className="flex items-center space-x-6">
+            <div className="flex items-center space-x-6 mr-2">
                 <Button
                     variant="secondary"
                     size="circleIcon"

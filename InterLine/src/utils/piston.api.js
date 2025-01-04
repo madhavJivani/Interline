@@ -24,7 +24,7 @@ const runCode = async (language, version, code) => {
                 }
             ],
         });
-        // console.log(response.data)
+        console.log(response.data)
         return response.data
     } catch (error) {
         console.error(error.response.data)

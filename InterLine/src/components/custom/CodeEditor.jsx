@@ -8,13 +8,15 @@ import { useSelector } from "react-redux";
 import { runCode } from '@/utils/piston.api'
 import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
-
+import { SpinWheelLoader } from '@/components/custom/elements/Loader'
 const CodeEditor = () => {
   const language = useSelector((state) => state.language);
   const editorTheme = useSelector((state) => state.theme.editorTheme);
-  const  option = useSelector((state) => state.option);
+  const option = useSelector((state) => state.option);
   // console.log(option)
   const [code, setCode] = useState(language.snippet);
+  const [output, setOutput] = useState("");
+  const [loading, setLoading] = useState(false);
 
   // Update code when language changes
   useEffect(() => {
@@ -22,9 +24,17 @@ const CodeEditor = () => {
   }, [language]);
 
   const run = async () => { 
-    // console.log(language.language, language.version, code)
-    const res = await runCode(language.language, language.version, code)
-    console.log("RES:",res.run.output, "\nError : ",res.run.stderr, "\nCode : ",res.run.code , "\nLanguage : ",res.language)
+    setLoading(true);
+    try {
+      const response = await runCode(language.language, language.version, code);
+      // console.log(response);
+      setOutput(response);
+    } catch (error) {
+      console.error(error);
+    }
+    finally {
+      setLoading(false);
+    }
   }
   return (
     <>
@@ -38,9 +48,10 @@ const CodeEditor = () => {
           <div className="flex flex-row justify-start  rounded-t-lg pb-1">
             <LanguageSelect />
           </div>
-          <Button onClick={run} variant="default" size="lg" className="mb-1 font-bold text-balance">
-            <Play size={5} strokeWidth={3} />
-            Run
+          <Button onClick={run} variant="default" size="md" className="mb-1 text-balance text-sm px-2"
+            disabled={loading}
+          >
+            {loading ? <SpinWheelLoader /> : <><Play size={24} /> Run Code </>}
           </Button>
           {/* Theme Select on the extreme right */}
           <div className="rounded-t-lg pb-1  justify-end">
@@ -58,7 +69,7 @@ const CodeEditor = () => {
           options={option}
           saveViewState={true}
         />
-        <IO />
+        <IO output={ output} />
       </div>
     </>);
 };

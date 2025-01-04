@@ -4,7 +4,7 @@ import { LANGUAGES_DETAILS } from '@/constants.js'
 const initialState = {
     language: "javascript",
     version: "1.32.3",
-    snippet: `console.log("Welcome to Interleaf");`
+    snippet: `console.log("Welcome to Interline");`
 };
 
 const langSlice = createSlice({
