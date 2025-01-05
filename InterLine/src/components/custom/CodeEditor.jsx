@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { runCode } from '@/utils/piston.api'
+
+import { Button } from "@/components/ui/button";
 import { Editor } from "@monaco-editor/react";
+
 import LanguageSelect from "@/components/custom/elements/LanguageSelect";
 import ThemeSelect from "@/components/custom/elements/ThemeSelect";
 import Options from "@/components/custom/elements/Options";
 import FileInputComponent from "@/components/custom/elements/FileInputComponent";
 import IO from "@/components/custom/elements/IO";
-import { useSelector } from "react-redux";
-import { runCode } from '@/utils/piston.api'
-import { Button } from "@/components/ui/button";
-import { Play, Download } from "lucide-react";
 import { SpinWheelLoader } from '@/components/custom/elements/Loader'
+
+import { Play, Download } from "lucide-react";
+
+
 const CodeEditor = () => {
   const language = useSelector((state) => state.language);
   const editorTheme = useSelector((state) => state.theme.editorTheme);

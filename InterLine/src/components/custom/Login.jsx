@@ -1,17 +1,19 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginUser } from '@/store/userSlice.js'
+import auth from '@/appwrite/appwrite.auth.js'
+
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Mail, Eye, EyeOff } from "lucide-react";
-import { Link } from "react-router-dom";
-import { account } from "@/appwrite/configuration";
-import { useToast } from "@/hooks/use-toast"
-import { useNavigate } from "react-router-dom";
-import { loginUser } from '@/store/userSlice.js'
-import { useDispatch } from "react-redux";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { SpinWheelLoader } from '@/components/custom/elements/Loader'
+import { useToast } from "@/hooks/use-toast"
+import { Mail, Eye, EyeOff } from "lucide-react";
+
 
 const Login = () => {
     const [loading, setLoading] = useState(false);
@@ -23,64 +25,42 @@ const Login = () => {
     const [password, setPassword] = useState("");
     
     const loginHandler = async () => {
-        setLoading(true);
-        try {
-            if (!email || !password) {
-                toast({
-                    desciption: "Email and Password are required!",
-                    status: "error"
-                })
-                // console.error("Email and Password are required!");
-                return;
-            }
-            console.table({ email, password });
-            const res = await account.createEmailPasswordSession(email, password);
-
-            if (res) {
-                // console.log("Login Successful:", res);
-                toast({
-                    description: "Login Successful",
-                    status: "success"
-                })
-                const user = await account.get();
-                toast({
-                    description: `Welcome ${user.name}`,
-                    status: "success"
-                })
-                dispatch(loginUser(user));
-                // console.log("User Details:", user);
-                navigate("/");
-            }
-        } catch (error) {
-            console.error("Login failed:", error.message || error);
+        if (!email || !password) {
             toast({
-                description: `Login failed: ${error.message || error}`,
+                desciption: "Email and Password are required!",
                 status: "error"
             })
+            return;
         }
-        finally {
-            setLoading(false);
+        setLoading(true);
+        console.table({ email, password });
+        const res = await auth.login({ email, password });
+        if (res) {
+            // console.log("Login Successful:", res);
+            toast({
+                description: "Login Successful",
+                status: "success"
+            })
+            const user = await auth.getUser();
+            toast({
+                description: `Welcome ${user.name}`,
+                status: "success"
+            })
+            dispatch(loginUser(user));
+            // console.log("User Details:", user);
+            navigate("/");
         }
+        setLoading(false);
     };
 
     const googleLoginHandler = async () => { 
         setLoading(true);
-        try {
-            const res = await account.createOAuth2Session(
-                "google",
-                "http://localhost:5173/code-editor/",
-                "http://localhost:5173/fail"
-            );
-            console.log("res",res);
-            const user = await account.get();
-            console.log("Google user => ", user);
-            dispatch(loginUser(user));
-        } catch (error) {
-            console.error("OAuth Session creation failed:", error.message || error);
-        }      
-        finally {
-            setLoading(false);
-        }
+        const res = await auth.OAuth();
+        console.log("res", res);
+        const user = await auth.getUser();
+        console.log("Google user => ", user);
+        dispatch(loginUser(user));  
+        setLoading(false);
     }
 
 

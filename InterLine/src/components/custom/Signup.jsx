@@ -1,15 +1,15 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast"
+import { useNavigate } from "react-router-dom";
+import auth from '@/appwrite/appwrite.auth.js'
+
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Mail, User, Eye, EyeOff } from "lucide-react";
-import { Link } from "react-router-dom";
-import { ID } from "appwrite";
-import { account } from "@/appwrite/configuration";
-import { useToast } from "@/hooks/use-toast"
-import { useNavigate } from "react-router-dom";
 import { SpinWheelLoader } from '@/components/custom/elements/Loader'
+import { Mail, User, Eye, EyeOff } from "lucide-react";
 
 const Signup = () => {
     const [loading, setLoading] = useState(false);
@@ -26,32 +26,20 @@ const Signup = () => {
         console.table({ firstName, lastName, email, password });
         setPassword("");
 
-        try {
-            const res = await account.create(ID.unique(), email, password, `${firstName.trim()} ${lastName.trim()}`);
-            console.log(res);
-            if (res.status) {
-                toast({
-                    description: "Account created successfully",
-                    status: "success"
-                });
-                navigate("/login");
-            }
-            else {
-                toast({
-                    description: "Account creation failed",
-                    status: "error"
-                });
-            }
-
-        } catch (error) {
-            console.error("Signup failed", error.message || error);
+        const res = await auth.signup({ email, password, firstName, lastName });
+        console.log(res);
+        if (res.status) {
             toast({
-                description: `Some error occured , please try again later`,
+                description: "Account created successfully",
+                status: "success"
+            });
+            navigate("/login");
+        }
+        else {
+            toast({
+                description: "Account creation failed",
                 status: "error"
             });
-        }
-        finally {
-            setLoading(false);
         }
     };
 

@@ -8,7 +8,7 @@ import { toggleTheme } from '@/store/themeSlice.js';
 import { useNavigate } from 'react-router-dom';
 import { logoutUser } from '@/store/userSlice.js';
 import { useToast } from "@/hooks/use-toast"
-import { account } from '@/appwrite/configuration.js'
+import auth from '@/appwrite/appwrite.auth.js'
 
 const Navbar = () => {
     const { toast } = useToast();
@@ -18,9 +18,9 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     const logoutHandler = async () => {
-        await account.deleteSession("current");
+        await auth.logout();
         console.log("User logged out");
-
+        // console.log(logoutRes);
         dispatch(logoutUser());
         navigate("/");
         toast({
