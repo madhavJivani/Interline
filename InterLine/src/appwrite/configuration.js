@@ -1,4 +1,4 @@
-import { Client, Account,  Databases,Storage } from "appwrite";
+import { Client, Account,  Databases } from "appwrite";
 import config from '@/config.js'
 
 const client = new Client()
@@ -7,6 +7,4 @@ const client = new Client()
 
 export const account = new Account(client);
 
-export const db = new Databases(client, config.appwriteDbId, config.appwriteCollectionId);
-
-export const bucket = new Storage(client, config.appwriteBucketId)
+export const db = new Databases(client);
