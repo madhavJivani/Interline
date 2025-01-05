@@ -6,5 +6,8 @@ const config = {
     appwriteBucketId: String(import.meta.env.VITE_APPWRITE_BUCKET_ID),
 };
 
+export const api = {
+    key: String(import.meta.env.VITE_AI_API_KEY),
+}
 
 export default config;
