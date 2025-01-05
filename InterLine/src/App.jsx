@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { account } from "@/appwrite/configuration.js";
-import { loginUser } from "@/store/userSlice.js";
 import { useDispatch } from "react-redux";
+import { loginUser } from "@/store/userSlice.js";
+import auth from '@/appwrite/appwrite.auth.js'
+
+import { ScrollArea } from "@/components/ui/scroll-area";
 import CodeEditor from "@/components/custom/CodeEditor";
 import Navbar from "./components/custom/elements/Navbar";
 import Home from "@/components/custom/Home";
@@ -20,7 +21,7 @@ const App = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const user = await account.get();
+        const user = await auth.getUser();
         // console.log("User Details:", user);
         dispatch(loginUser(user));
       } catch (error) {

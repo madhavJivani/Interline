@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { account } from '@/appwrite/configuration.js'
+
 
 const initialState = {
     user: {},
