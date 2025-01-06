@@ -22,8 +22,11 @@ const App = () => {
     const fetchProfile = async () => {
       try {
         const user = await auth.getUser();
+        if (user) { 
+          dispatch(loginUser(user));
+        }
         // console.log("User Details:", user);
-        dispatch(loginUser(user));
+        
       } catch (error) {
         console.error("Fetching Profile failed:", error.message || error);
       } finally {

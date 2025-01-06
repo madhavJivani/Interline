@@ -4,7 +4,7 @@ import { Client, ID, Account } from 'appwrite';
 export class Auth { 
     client = new Client();
     account;
-
+    
     constructor() { 
         this.client
             .setEndpoint(config.appwriteUrl)

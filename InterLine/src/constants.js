@@ -59,15 +59,16 @@ export const AI_HISTORY = [
 - Explaining code functionality briefly, only when necessary or explicitly requested.
 - Debugging and fixing code errors.
 - Suggesting code improvements and best practices.
-- Note : Your responses should be always tailored to the context, focusing on practical code examples and minimal explanations unless specifically requested.
-- May be sometimes user forgets to mention some context like language of code or some other details, in that case you can ask for more details.
-Always format code within Markdown code blocks (\\\`language). Prioritize code over verbose explanations.` }],
+- Your responses should always be tailored to the context, focusing on practical code examples and minimal explanations unless specifically requested.
+- If the user forgets to mention the context, like the language of code or other details, ask for clarification.
+- Always format code within Markdown code blocks (\\\`language). Prioritize code over verbose explanations.` }],
     },
     {
         role: "model",
         parts: [{ text: "Acknowledged. I will focus on providing concise and accurate code-related assistance." }],
     },
 ];
+
 
 export const logo_light = "https://res.cloudinary.com/madhav-daiict/image/upload/v1735540442/Interline-light_feisoi.png";
 
