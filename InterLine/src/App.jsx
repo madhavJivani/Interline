@@ -3,7 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import { useDispatch } from "react-redux";
 import { loginUser } from "@/store/userSlice.js";
+import { setCodes } from '@/store/codeSlice.js'
 import auth from '@/appwrite/appwrite.auth.js'
+import service from '@/appwrite/appwrite.db.js'
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import CodeEditor from "@/components/custom/CodeEditor";
@@ -13,6 +15,7 @@ import Signup from "@/components/custom/Signup";
 import Login from "@/components/custom/Login";
 import Profile from "@/components/custom/Profile";
 import Footer from "./components/custom/elements/Footer";
+import FileList from '@/components/custom/elements/Code/FileList'
 import { DotPingLoader } from "@/components/custom/elements/Loader";
 
 const App = () => {
@@ -25,6 +28,11 @@ const App = () => {
         const user = await auth.getUser();
         if (user) { 
           dispatch(loginUser(user));
+          const docs = await service.listDocument(user.$id);
+          console.log(docs);
+          if (docs) {
+            dispatch(setCodes(docs));
+          }
         }
         // console.log("User Details:", user);
         
@@ -55,9 +63,7 @@ const App = () => {
             <Route
               path="/test"
               element={
-                <div className="flex items-center justify-center h-screen">
-                  <DotPingLoader />
-                </div>
+                <FileList />
               }
             />
             </Routes>
