@@ -21,7 +21,7 @@ const FileInputComponent = ({ setCode }) => {
 
                 reader.onload = (event) => {
                     const fileContent = event.target.result;
-                    console.log("File Content:", fileContent);
+                    // console.log("File Content:", fileContent);
                     setCode(fileContent);
                 };
 

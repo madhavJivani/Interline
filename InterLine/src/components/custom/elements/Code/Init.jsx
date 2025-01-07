@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {Dialog,DialogContent,DialogDescription,DialogHeader,DialogTitle,DialogTrigger,DialogFooter,} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import {Select,SelectTrigger,SelectContent,SelectGroup,SelectItem,SelectLabel,SelectValue,} from "@/components/ui/select";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -31,9 +31,9 @@ const Init = () => {
             });
 
             const docs = await service.listDocument(user.$id);
-            console.log(docs);
+            console.log(docs.documents);
             if (docs) { 
-                dispatch(setCodes(docs));
+                dispatch(setCodes(docs.documents));
             }
 
         } catch (error) {
@@ -101,6 +101,8 @@ const Init = () => {
                     </div>
 
                     {/* Submit Button */}
+                    <DialogClose>
+
                     <DialogFooter>
                         <Button
                             type="submit"
@@ -108,10 +110,11 @@ const Init = () => {
                             variant="default"
                             className="font-sans w-full"
                             disabled={loading}
-                        >
+                            >
                             {loading ? <SpinWheelLoader /> : "Initiate File"}
                         </Button>
                     </DialogFooter>
+                            </DialogClose>
                 </form>
             </DialogContent>
         </Dialog>

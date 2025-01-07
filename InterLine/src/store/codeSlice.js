@@ -5,7 +5,11 @@ const codeSlice = createSlice({
     initialState: [],
     reducers: {
         setCodes(state, action) {
-            return action.payload;
+            const obj = action.payload;
+            obj.forEach((item, index) => {
+                item.status = index === 0; // Assign status directly
+            });
+            return obj; // Return the modified array
         },
         removeCodes() {
             return [];

@@ -15,7 +15,7 @@ const langSlice = createSlice({
             // console.log(action.payload)
             state.language = action.payload.language;
             state.version = LANGUAGES_DETAILS[action.payload.language][0];
-            state.snippet = LANGUAGES_DETAILS[action.payload.language][1];
+            state.snippet = action.payload.code || LANGUAGES_DETAILS[action.payload.language][1];
         },
     },
 });

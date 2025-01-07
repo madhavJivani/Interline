@@ -15,7 +15,8 @@ import Signup from "@/components/custom/Signup";
 import Login from "@/components/custom/Login";
 import Profile from "@/components/custom/Profile";
 import Footer from "./components/custom/elements/Footer";
-import FileList from '@/components/custom/elements/Code/FileList'
+import IDE from "@/components/custom/elements/Code/IDE";
+import Options from "./components/custom/elements/Options";
 import { DotPingLoader } from "@/components/custom/elements/Loader";
 
 const App = () => {
@@ -29,9 +30,9 @@ const App = () => {
         if (user) { 
           dispatch(loginUser(user));
           const docs = await service.listDocument(user.$id);
-          console.log(docs);
+          console.log(docs.documents);
           if (docs) {
-            dispatch(setCodes(docs));
+            dispatch(setCodes(docs.documents));
           }
         }
         // console.log("User Details:", user);
@@ -56,14 +57,22 @@ const App = () => {
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/code-editor" element={<CodeEditor />} />
+              <Route path="/code-editor" element={
+                <>
+                <div className='flex flex-row justify-end my-2 mb-6' >
+                  <div className='mr-4' >
+                    <Options />
+                  </div>
+                </div>
+                <CodeEditor />
+              </>} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<Profile />} />
             <Route
               path="/test"
               element={
-                <FileList />
+                <IDE/>
               }
             />
             </Routes>

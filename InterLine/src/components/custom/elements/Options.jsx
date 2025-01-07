@@ -35,7 +35,6 @@ const Options = () => {
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
                 <DialogTrigger asChild>
                     <Button
-                        className="absolute right-2 mt-2"
                         onClick={() => setIsOpen(true)}
                         variant="ghost"
                         size="circleIcon"
