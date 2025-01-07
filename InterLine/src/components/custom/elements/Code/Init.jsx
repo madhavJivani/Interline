@@ -1,34 +1,19 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-    DialogFooter,
-} from "@/components/ui/dialog";
+import {Dialog,DialogContent,DialogDescription,DialogHeader,DialogTitle,DialogTrigger,DialogFooter,} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import {
-    Select,
-    SelectTrigger,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectValue,
-} from "@/components/ui/select";
+import {Select,SelectTrigger,SelectContent,SelectGroup,SelectItem,SelectLabel,SelectValue,} from "@/components/ui/select";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { FilePlus, FileText, FolderOpen } from "lucide-react";
 import service from "@/appwrite/appwrite.db.js";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setCodes } from '@/store/codeSlice.js'
 import { LANGUAGES_DETAILS } from "@/constants.js";
 import { SpinWheelLoader } from "@/components/custom/elements/Loader";
 
 const Init = () => {
     const { user } = useSelector((state) => state.user);
-
+    const dispatch = useDispatch();
     const [fileName, setFileName] = useState("");
     const [language, setLanguage] = useState("javascript");
     const [loading, setLoading] = useState(false);
@@ -47,6 +32,9 @@ const Init = () => {
 
             const docs = await service.listDocument(user.$id);
             console.log(docs);
+            if (docs) { 
+                dispatch(setCodes(docs));
+            }
 
         } catch (error) {
             console.error("Appwrite init error", error);

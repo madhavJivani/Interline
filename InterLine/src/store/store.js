@@ -4,6 +4,7 @@ import langSlice from './languageSlice.js'
 import userSlice from './userSlice.js'
 import optionSlice from './optionSlice.js'
 import aiSlice from './aiSlice.js'
+import codeSlice from './codeSlice.js'
 
 const store = configureStore({
     reducer: {
@@ -12,7 +13,8 @@ const store = configureStore({
         user:userSlice,
         language: langSlice,
         option: optionSlice,
-        ai: aiSlice
+        ai: aiSlice,
+        code: codeSlice
     }
 });
 
