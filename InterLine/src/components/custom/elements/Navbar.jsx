@@ -25,6 +25,9 @@ const Navbar = () => {
         navigate("/");
         toast({
             description: "Logged out successfully",
+            style: {
+                marginBottom: "1rem"
+            },
             status: "success"
         });
     }

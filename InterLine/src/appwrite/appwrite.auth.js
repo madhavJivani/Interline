@@ -19,7 +19,8 @@ export class Auth {
             // console.log(res);
             return res;
         } catch (error) {
-            console.log("Error in auth-signup : ",error);
+            console.log("Error in auth-signup : ", error);
+            return { status: false, error: error?.message || "Signup failed" };
         }
     }
 
@@ -29,7 +30,8 @@ export class Auth {
             // console.log(res);
             return res;
         } catch (error) {
-            console.log("Error in auth-login : ",error);
+            console.log("Error in auth-login : ", error);
+            return false;
         }
     }
 

@@ -12,6 +12,7 @@ import Home from "@/components/custom/Home";
 import Signup from "@/components/custom/Signup";
 import Login from "@/components/custom/Login";
 import Profile from "@/components/custom/Profile";
+import Footer from "./components/custom/elements/Footer";
 import { DotPingLoader } from "@/components/custom/elements/Loader";
 
 const App = () => {
@@ -59,7 +60,8 @@ const App = () => {
                 </div>
               }
             />
-          </Routes>
+            </Routes>
+          <Footer />
           <Toaster />
         </Router>
       </div>

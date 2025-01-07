@@ -23,23 +23,75 @@ const Signup = () => {
 
     const signupHandler = async () => {
         setLoading(true);
-        console.table({ firstName, lastName, email, password });
-        setPassword("");
-
-        const res = await auth.signup({ email, password, firstName, lastName });
-        console.log(res);
-        if (res.status) {
+        // Input validation
+        if (!firstName.trim() || !lastName.trim() || !email.trim() || !password.trim()) {
             toast({
-                description: "Account created successfully",
-                status: "success"
+                description: "All fields are required and cannot be empty or whitespace.",
+                style: {
+                    marginBottom: "1rem"
+                },
+                status: "error",
             });
-            navigate("/login");
+            setLoading(false);
+            return;
         }
-        else {
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
             toast({
-                description: "Account creation failed",
+                description: "Please enter a valid email address.",
+                style: {
+                    marginBottom: "1rem"
+                },
+                status: "error",
+            });
+            setLoading(false);
+            return;
+        }
+
+        const nameRegex = /^[a-zA-Z\s]+$/; // Allows only letters and spaces
+        if (!nameRegex.test(firstName) || !nameRegex.test(lastName)) {
+            toast({
+                description: "Names can only contain letters and spaces.",
+                style: {
+                    marginBottom: "1rem"
+                },
+                status: "error",
+            });
+            setLoading(false);
+            return;
+        }
+
+        console.table({ firstName, lastName, email, password });
+
+        try {
+            const res = await auth.signup({ email, password, firstName, lastName });
+            console.log(res);
+            if (res.status) {
+                toast({
+                    description: "Account created successfully",
+                    status: "success"
+                });
+                navigate("/login");
+            }
+            else {
+                toast({
+                    description: "Account creation failed",
+                    status: "error"
+                });
+            }
+        } catch (error) {
+            toast({
+                description: "Something went wrong please try again later ...",
+                style: {
+                    marginBottom: "1rem"
+                },
                 status: "error"
             });
+        }
+        finally { 
+            setPassword("");
+            setLoading(false);
         }
     };
 

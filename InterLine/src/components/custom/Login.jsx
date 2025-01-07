@@ -16,7 +16,8 @@ import { Mail, Eye, EyeOff } from "lucide-react";
 
 
 const Login = () => {
-    const [loading, setLoading] = useState(false);
+    const [loading1, setLoading1] = useState(false);
+    const [loading2, setLoading2] = useState(false);
     const { toast } = useToast();
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -27,40 +28,91 @@ const Login = () => {
     const loginHandler = async () => {
         if (!email || !password) {
             toast({
-                desciption: "Email and Password are required!",
+                description: "Email and Password are required",
+                style: {
+                    marginBottom: "1rem"
+                },
                 status: "error"
-            })
+            });
             return;
         }
-        setLoading(true);
+        setLoading1(true);
         console.table({ email, password });
-        const res = await auth.login({ email, password });
-        if (res) {
-            // console.log("Login Successful:", res);
+        try {
+            const res = await auth.login({ email, password });
+            // console.log(res);
+            if (res) {
+                // console.log("Login Successful:", res);
+                toast({
+                    description: "Login Successful",
+                    style: {
+                        marginBottom: "1rem"
+                    },
+                    status: "success"
+                })
+                const user = await auth.getUser();
+                console.log(user)
+                toast({
+                    description: `Welcome ${user.name}`,
+                    style: {
+                        marginBottom: "1rem"
+                    },
+                    status: "success"
+                })
+                dispatch(loginUser(user));
+                // console.log("User Details:", user);
+                navigate("/");
+            }
+            else {
+                toast({
+                    description: "Login Failed! Please check your credentials",
+                    style: {
+                        marginBottom: "1rem"
+                    },
+                    status: "error"
+                })
+            }
+        } catch (error) {
             toast({
-                description: "Login Successful",
-                status: "success"
-            })
-            const user = await auth.getUser();
-            toast({
-                description: `Welcome ${user.name}`,
-                status: "success"
-            })
-            dispatch(loginUser(user));
-            // console.log("User Details:", user);
-            navigate("/");
+                description: "Something went wrong please try again later ...",
+                style: {
+                    marginBottom: "1rem"
+                },
+                status: "error"
+            });
         }
-        setLoading(false);
+        finally { 
+            setLoading1(false);
+            setPassword("");
+        }
     };
 
     const googleLoginHandler = async () => { 
-        setLoading(true);
-        const res = await auth.OAuth();
-        console.log("res", res);
-        const user = await auth.getUser();
-        console.log("Google user => ", user);
-        dispatch(loginUser(user));  
-        setLoading(false);
+        setLoading2(true);
+        try {
+            const res = await auth.OAuth();
+            // console.log("res", res);
+            if (res) {
+                const user = await auth.getUser();
+                toast({
+                    description: `Welcome ${user.name}`,
+                    style: {
+                        marginBottom: "1rem"
+                    },
+                    status: "success"
+                });
+                // console.log("Google user => ", user);
+                dispatch(loginUser(user));
+            }
+            else { 
+                console.log("Google Login Failed, may work or function");
+            }
+        } catch (error) {
+            
+        }
+        finally { 
+            setLoading2(false);
+        }
     }
 
 
@@ -115,17 +167,17 @@ const Login = () => {
                 <CardFooter className="flex flex-col items-center space-y-4">
                         <Button className="w-full"
                             onClick={loginHandler}
-                            disabled={loading}
+                            disabled={loading1 || loading2}
                     >
                         { 
-                            loading ? (<div className="flex items-center justify-center mx-auto">
+                            loading1 ? (<div className="flex items-center justify-center mx-auto">
                                 <SpinWheelLoader />
                             </div>) : "Log In"
                         }
                         </Button>
                     <Button
                             onClick={googleLoginHandler}
-                            disabled={loading}
+                            disabled={loading1 || loading2}
                         className="w-full relative justify-start items-center" 
                     >
                         <Avatar className="absolute left-2 h-6 w-6">
@@ -133,7 +185,7 @@ const Login = () => {
                             <AvatarFallback>G</AvatarFallback>
                         </Avatar>
                         {
-                            loading ? (<div className="flex items-center justify-center mx-auto">
+                            loading2 ? (<div className="flex items-center justify-center mx-auto">
                                 <SpinWheelLoader />
                             </div>) : (<span className="mx-auto">Sign in with Google</span>)
                         }

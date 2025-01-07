@@ -78,7 +78,7 @@ const CodeEditor = () => {
       <div className="sticky top-0 z-50 shadow-md">
         <Options />
       </div>
-      <div className="flex flex-col items-center justify-center rounded-lg pb-5 w-[80%] mx-auto mt-10">
+      <div className="flex flex-col items-center justify-center rounded-lg pb-5 w-[95%] mx-auto mt-10">
         <div className="w-full flex justify-between items-start mb-1"> {/* Main toolbar container */}
           <div className="rounded-t-lg pb-1"> {/* Language Select */}
             <LanguageSelect />
