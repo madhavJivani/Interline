@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Rnd } from "react-rnd";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -23,6 +23,8 @@ const MovableResizableCard = () => {
     const [currentInput, setCurrentInput] = useState("");
     const [chatHistory, setChatHistory] = useState(AI_HISTORY);
     const [loading, setLoading] = useState(false);
+    const messagesEnd = useRef(null);
+
     const handleSend = async () => {
         if (currentInput.trim()) {
             setLoading(true);
@@ -99,6 +101,12 @@ const MovableResizableCard = () => {
     const toggleVisibility = () => {
         setVisible(!visible);
     };
+
+    useEffect(() => {
+        if (messagesEnd.current) {
+            messagesEnd.current.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [ai])
     useGlobalKeybinding('ctrl+enter', handleSend);
     return (
         <>
@@ -110,7 +118,7 @@ const MovableResizableCard = () => {
                 variant="outline"
             >
                 {visible ? <MessageCircleOff className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
-                
+
             </Button>
 
             {/* Movable and resizable card */}
@@ -166,7 +174,7 @@ const MovableResizableCard = () => {
                                         </div>
                                         <span>ChatBot</span>
                                     </div>
-                                    <Button size="icon" onClick={toggleVisibility} variant="ghost" > 
+                                    <Button size="icon" onClick={toggleVisibility} variant="ghost" >
                                         <X className="h-6 w-6" />
                                     </Button>
                                 </div>
@@ -183,11 +191,13 @@ const MovableResizableCard = () => {
                                                     <InputMsg key={index} message={msg.parts[0].text} />
                                                 </div>
                                             ) : (
-                                                    <div className="flex flex-row justify-start" >
-                                                        <ResMsg key={index} message={msg.parts[0].text} />
+                                                <div className="flex flex-row justify-start" >
+                                                    <ResMsg key={index} message={msg.parts[0].text} />
                                                 </div>
                                             )
                                         )}
+
+                                        <div ref={messagesEnd} />
                                     </div>
                                 </ScrollArea>
                                 {/* Input Field */}

@@ -17,15 +17,19 @@ const Home = () => {
                 <div className="flex flex-row justify-start bg-background ml-4">
                     <HeroScrollDemo
                         title="Explore Terminal"
-                        content="Discover the Input and Output section of SyntaxSpace Rich CodeEditor."
-                        imageUrl="/src/assets/IntegratedTerminal(Text&FileIO).png"
+                        imageUrl="/src/assets/IO.png"
                     />
                 </div>
                 <div className="flex flex-row justify-end bg-background mr-4">
                     <HeroScrollDemo
-                        title="Explore Creativity"
-                        content="Discover endless possibilities."
-                        imageUrl="/src/assets/SecureAuthentication(Google&Custom).png"
+                        title="Explore File IO"
+                        imageUrl="/src/assets/File.png"
+                    />
+                </div>
+                <div className="flex flex-row justify-start bg-background mr-4">
+                    <HeroScrollDemo
+                        title="Explore AI Chat Bot"
+                        imageUrl="/src/assets/Chat.png"
                     />
                 </div>
             </div>

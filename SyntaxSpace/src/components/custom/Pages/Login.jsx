@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect,useRef } from 'react';
 import auth from '@/backend/appwrite.auth.js'
 import { useDispatch } from 'react-redux';
 import { login as storeLogin } from '@/store/userSlice.js'
@@ -9,7 +9,7 @@ import service from '@/backend/appwrite.db.js';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardDescription, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardDescription, CardTitle, CardFooter } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { SpinWheelLoader } from '../fragments/Loader';
 import { Mail, Eye, EyeOff, LogIn } from 'lucide-react';
@@ -28,6 +28,17 @@ const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+
+    const cardRef = useRef(null);
+
+    useEffect(() => {
+        if (cardRef.current) {
+            cardRef.current.scrollIntoView({
+                behavior: 'smooth', // For smooth scrolling
+                block: 'center' // To align the top of the element to the top of the viewport
+            });
+        }
+    }, []);
 
     const hanleLogin = async () => {
         if (!email || !password) {
@@ -93,7 +104,7 @@ const Login = () => {
     
     return (
         <div className="flex justify-center items-center h-screen bg-background">
-            <Card className="w-full max-w-lg p-6 shadow-lg border border-border bg-card">
+            <Card className="w-full max-w-lg p-6 shadow-lg border border-border bg-card" ref={cardRef} >
                 <CardHeader className="space-y-1 text-center hover:cursor-context-menu ">
                     <CardTitle className="text-2xl font-bold font-playfair text-primary">
                         Welcome Back to <span>Syntax</span><span className="text-muted-foreground">Space</span>
@@ -178,6 +189,11 @@ const Login = () => {
                             </>}
                     </Button>
                 </CardContent>
+                <CardFooter className="flex flex-row items-center justify-center text-muted-foreground">
+                    <div className="text-center text-muted-foreground">
+                        Don't have an account? <span className="text-primary hover:underline cursor-pointer" onClick={() => navigate('/signup')}> Sign Up</span>
+                    </div>
+                </CardFooter>
             </Card>
         </div>
     );

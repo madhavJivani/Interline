@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Editor from "@monaco-editor/react";
 import ThemeSelect from "./ThemeSelect";
 import LanguageSelect from "./LanguageSelect";
@@ -22,13 +22,26 @@ const CodeEditor = ({
     defaultCode = `console.log("Welcome to SyntaxSpace");`,
 }) => {
     const curr = useSelector((state) => state.documents.currentDoc);
-    const [code, setCode] = useState(curr.code || defaultCode);
-    const [language, setLanguage] = useState(curr.language || defaultLanguage);
+    const [code, setCode] = useState(curr.code || localStorage.getItem("syntax_code") || defaultCode);
+    const [language, setLanguage] = useState(curr.language || localStorage.getItem("syntax_language") || defaultLanguage);
     const [theme, setTheme] = useState("vs-dark");
     const [editorOptions, setEditorOptions] = useState(initialOptions);
     const [input, setInput] = useState("");
     const [output, setOutput] = useState("");
-    const {user,status} = useSelector(state => state.user)
+    const { user, status } = useSelector(state => state.user)
+
+    const codeRef = useRef(null);
+    useEffect(() => {
+        // console.log("hello");
+        // console.log("syntax_language:", localStorage.getItem("syntax_language"));
+        // console.log("syntax_code:", localStorage.getItem("syntax_code"));
+
+        return () => {
+            // console.log("bye");
+            localStorage.setItem("syntax_language", language);
+            localStorage.setItem("syntax_code", code);
+        };
+    }, [code, language]);
 
     return (
         <div className="p-4 bg-background border-2 border-muted rounded-xl mb-8">
@@ -45,38 +58,38 @@ const CodeEditor = ({
                 <div className="w-1/3 flex flex-row justify-center items-center">
                     {status === 'loggedIn' &&
                         <>
-                        <div className="flex items-center gap-2 justify-end">
-                            <TooltipProvider>
-                                <Tooltip>
-                                    <TooltipTrigger>
-                                        <SaveFile code={code} />
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                        <p>
-                                            Save your code.
-                                            <br />
-                                            <span className="font-semibold">Always Save your work before switching.</span>
-                                        </p>
-                                    </TooltipContent>
-                                </Tooltip>
-                                <Tooltip>
-                                    <TooltipTrigger>
-                                        <DeleteFile />
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                        <p>Delete your code.</p>
-                                    </TooltipContent>
-                                </Tooltip>
-                                <Tooltip>
-                                    <TooltipTrigger>
-                                        <EditFile />
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                        <p>Change Filename.</p>
-                                    </TooltipContent>
-                                </Tooltip>
-                            </TooltipProvider>
-                        </div>
+                            <div className="flex items-center gap-2 justify-end">
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger>
+                                            <SaveFile code={code} />
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>
+                                                Save your code.
+                                                <br />
+                                                <span className="font-semibold">Always Save your work before switching.</span>
+                                            </p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                    <Tooltip>
+                                        <TooltipTrigger>
+                                            <DeleteFile />
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>Delete your code.</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                    <Tooltip>
+                                        <TooltipTrigger>
+                                            <EditFile />
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>Change Filename.</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                            </div>
                         </>
                     }
                 </div>
@@ -113,7 +126,7 @@ const CodeEditor = ({
                         </Tooltip>
                         <Tooltip>
                             <TooltipTrigger>
-                                <RunCode code={code} language={language} input={input} setOutput={setOutput} />
+                                <RunCode code={code} language={language} input={input} setOutput={setOutput} codeRef={codeRef} />
                             </TooltipTrigger>
                             <TooltipContent>
                                 <p
@@ -121,8 +134,8 @@ const CodeEditor = ({
                                 >Test your code.
                                     <br />
                                     <strong>
-                                        ShortCut : 
-                                    ⌘ F9
+                                        ShortCut :
+                                        ⌘ F9
                                     </strong>
                                 </p>
                             </TooltipContent>
@@ -133,7 +146,7 @@ const CodeEditor = ({
                             </TooltipTrigger>
                             <TooltipContent>
                                 <p
-                                 className="text-center"
+                                    className="text-center"
                                 >Upload your code.
                                     <br />
                                     <strong>
@@ -163,7 +176,7 @@ const CodeEditor = ({
             </div>
 
             {/* Input Output */}
-            <div className="mt-2">
+            <div className="mt-2" ref={codeRef}>
                 <InputOutput input={input} setInput={setInput} output={output} />
             </div>
         </div>

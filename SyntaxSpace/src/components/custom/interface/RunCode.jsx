@@ -7,7 +7,7 @@ import { Play } from 'lucide-react'
 import useGlobalKeybinding from '@/config/hooks/useGlobalKeybinding'
 
 
-const RunCode = ({ language, code, input, setOutput }) => {
+const RunCode = ({ language, code, input, setOutput, codeRef }) => {
     const [loading, setLoading] = useState(false);
 
     const handleCodeRunner = async () => {
@@ -20,6 +20,13 @@ const RunCode = ({ language, code, input, setOutput }) => {
         console.log(response);
         setOutput(response.run.output);
         setLoading(false);
+
+        if (codeRef.current) {
+            codeRef.current.scrollIntoView({
+                behavior: 'smooth', // For smooth scrolling
+                block: 'center'
+            });
+        }
     };
     useGlobalKeybinding("ctrl+f9", handleCodeRunner)
     return (

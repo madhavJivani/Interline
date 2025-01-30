@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import auth from '@/backend/appwrite.auth.js'
 import service from '@/backend/appwrite.db';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +10,7 @@ import { login as storeLogin } from '@/store/userSlice';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardDescription, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardDescription, CardTitle, CardFooter } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { User, Mail, MailPlus, Eye, EyeOff } from 'lucide-react';
 import { toast } from "sonner";
@@ -31,6 +31,16 @@ const Signup = () => {
     const togglePasswordVisibility = () => setShowPassword(!showPassword);
     const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
     const navigate = useNavigate();
+
+    const cardRef = useRef(null);
+    useEffect(() => {
+        if (cardRef.current) {
+            cardRef.current.scrollIntoView({
+                behavior: 'smooth', // For smooth scrolling
+                block: 'center' // To align the top of the element to the top of the viewport
+            });
+        }
+    }, []);
 
     const handleSignUp = async () => {
         if (!firstName || !lastName || !email || !password || !confirmPassword) {
@@ -82,7 +92,7 @@ const Signup = () => {
 
     return (
         <div className="flex justify-center items-center h-screen bg-background">
-            <Card className="w-full max-w-lg p-6 shadow-lg border border-border bg-card">
+            <Card className="w-full max-w-lg p-6 shadow-lg border border-border bg-card" ref={cardRef}>
                 <CardHeader className="space-y-1 text-center hover:cursor-context-menu ">
                     <CardTitle className="text-2xl font-bold font-playfair text-primary">
                         Welcome to <span>Syntax</span><span className="text-muted-foreground">Space</span>
@@ -200,6 +210,11 @@ const Signup = () => {
                                 </>}
                     </Button>
                 </CardContent>
+                <CardFooter>
+                    <div className="text-center text-muted-foreground">
+                        Already have an account Or want to continue with Google? <span className="text-primary hover:underline cursor-pointer" onClick={() => navigate('/login')}> Log In</span>
+                    </div>
+                </CardFooter>
             </Card>
         </div>
     );
