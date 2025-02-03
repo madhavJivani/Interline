@@ -16,16 +16,16 @@ const Message = ({ code, language }) => {
 
   return (
     <div className="max-w-3xl overflow-x-auto rounded-md">
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-sm text-muted-foreground">{language}</span>
+      <div className="flex items-center justify-between bg-white/50 dark:bg-neutral-900/40">
+        <span className="text-sm text-muted-foreground mx-2">{language}</span>
         <Button
-          variant="outline"
+          variant="ghost"
           size="xs"
           onClick={copyToClipboard}
-          className="p-2 bg-muted/30 hover:bg-muted/20"
+          className="p-3 bg-white/50 dark:bg-neutral-900/40 rounded-none w-[8em]"
         >
           <Copy className="h-4 w-4 text-muted-foreground" />
-          {copied ? <span className="text-green-500">Copied!</span> : <span>Copy</span>}
+          {copied ? <span className="text-green-500 font-source">Copied</span> : <span className="font-source">Copy</span>}
         </Button>
       </div>
       <SyntaxHighlighter
@@ -33,7 +33,6 @@ const Message = ({ code, language }) => {
         style={atomOneDark}
         customStyle={{
           padding: "1rem",
-          borderRadius: "0.5rem",
         }}
         wrapLongLines={true}
       >

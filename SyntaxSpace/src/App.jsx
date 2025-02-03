@@ -16,6 +16,7 @@ import Footer from "./components/custom/elements/Footer";
 import { DotPingLoader } from '@/components/custom/fragments/Loader'
 
 import { Toaster } from "@/components/ui/sonner"
+import NotFound from './components/custom/Pages/NotFound';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -84,7 +85,7 @@ const App = () => {
                     </div>
                   </>
                 } />
-                <Route path="*" element={<div>404 Not Found</div>} />
+                <Route path="*" element={<NotFound/>} />
               </Routes>
               <Toaster />
             </>
