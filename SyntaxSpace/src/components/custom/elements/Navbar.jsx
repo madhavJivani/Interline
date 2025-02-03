@@ -39,7 +39,7 @@ const Navbar = () => {
 
     return (
         <header className="sticky top-0 left-0 right-0 z-50 bg-background/70 backdrop-blur-lg border-b border-border min-h-[10vh] ">
-            <div className="mx-auto flex items-center justify-between px-12 py-3 max-w-screen-lg">
+            <div className="mx-auto flex items-center justify-between px-12 py-3 max-w-screen-lg min-h-[10vh]">
                 {/* Left: Logo */}
                 <div className="text-3xl font-bold tracking-tight text-primary font-playfair hover:cursor-context-menu w-1/3 flex items-center">
                     <span>Syntax</span>

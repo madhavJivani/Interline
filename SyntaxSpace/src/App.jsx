@@ -1,7 +1,7 @@
 import auth from '@/backend/appwrite.auth.js'
 import service from '@/backend/appwrite.db.js';
-import { useEffect,useState } from 'react';
-import { useSelector,useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { login as storeLogin, logout as storeLogout } from '@/store/userSlice.js'
 import { setDocuments } from '@/store/documentSlice.js'
 
@@ -21,14 +21,14 @@ import NotFound from './components/custom/Pages/NotFound';
 const App = () => {
   const dispatch = useDispatch();
   const curr = useSelector(state => state.documents.currentDoc)
-  const [loading,setLoading] = useState(false);
-  
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const fetchCurrentUser = async () => {
       setLoading(true);
       try {
         const user = await auth.getUser();
-        if (user) { 
+        if (user) {
           dispatch(storeLogin(user));
           const docs = await service.listDocument(user.$id);
           // console.log("DOCS : ", docs);
@@ -39,7 +39,7 @@ const App = () => {
             dispatch(setDocuments(newDocs.documents));
             console.log("DEFAULT DOC CREATED", newDocs);
           }
-          else { 
+          else {
             dispatch(setDocuments(docs.documents));
           }
         }
@@ -63,12 +63,12 @@ const App = () => {
         <>
           {loading ?
             <>
-              
+
               <div className='min-h-screen flex justify-center items-center -translate-y-8 ' >
                 <DotPingLoader />
               </div>
 
-          </> :
+            </> :
             <>
               <Routes>
                 <Route path="/" element={<Home />} />
@@ -85,11 +85,11 @@ const App = () => {
                     </div>
                   </>
                 } />
-                <Route path="*" element={<NotFound/>} />
+                <Route path="*" element={<NotFound />} />
               </Routes>
               <Toaster />
             </>
-        }
+          }
         </>
       </div>
       <Footer />

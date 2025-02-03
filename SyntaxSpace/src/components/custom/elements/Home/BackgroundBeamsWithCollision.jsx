@@ -30,7 +30,7 @@ const BackgroundBeamsWithCollisionPage = () => {
                             Multi-language Coding Support
                         </HoverCardTrigger>
                         <HoverCardContent>
-                            <p>Write, edit, and debug code in multiple programming languages, including JavaScript, Python, C++, and more.</p>
+                            <p className='text-sm'>Write, edit, and debug code in multiple programming languages, including JavaScript, Python, C++, and more.</p>
                         </HoverCardContent>
                     </HoverCard>
                     <ChevronRight size={30} />
@@ -41,7 +41,7 @@ const BackgroundBeamsWithCollisionPage = () => {
                             Advanced Code Editor
                         </HoverCardTrigger>
                         <HoverCardContent>
-                            <p>Experience an advanced, user-friendly code editor with syntax highlighting, autocompletion, and error detection.</p>
+                            <p className='text-sm'>Experience an advanced, user-friendly code editor with syntax highlighting, autocompletion, and error detection.</p>
                         </HoverCardContent>
                     </HoverCard>
                     <ChevronRight size={30} />
@@ -52,7 +52,7 @@ const BackgroundBeamsWithCollisionPage = () => {
                             Integrated Terminal (Text & File I/O)
                         </HoverCardTrigger>
                         <HoverCardContent>
-                            <p>Run commands, test scripts, and handle file input/output seamlessly within an integrated terminal.</p>
+                            <p className='text-sm'>Run commands, test scripts, and handle file input/output seamlessly within an integrated terminal.</p>
                         </HoverCardContent>
                     </HoverCard>
                     <ChevronRight size={30} />
@@ -63,7 +63,7 @@ const BackgroundBeamsWithCollisionPage = () => {
                             Secure Authentication (Google & Custom)
                         </HoverCardTrigger>
                         <HoverCardContent>
-                            <p>Ensure safe access with Google Sign-In and customizable authentication methods for users.</p>
+                            <p className='text-sm'>Ensure safe access with Google Sign-In and customizable authentication methods for users.</p>
                         </HoverCardContent>
                     </HoverCard>
                     <ChevronRight size={30} />
@@ -74,7 +74,7 @@ const BackgroundBeamsWithCollisionPage = () => {
                             Gemini-powered AI Coding Assistant
                         </HoverCardTrigger>
                         <HoverCardContent>
-                            <p>Boost productivity with AI-powered assistance for code generation, debugging, and learning.</p>
+                            <p className='text-sm'>Boost productivity with AI-powered assistance for code generation, debugging, and learning.</p>
                         </HoverCardContent>
                     </HoverCard>
                 </span>
